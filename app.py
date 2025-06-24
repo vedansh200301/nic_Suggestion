@@ -21,7 +21,8 @@ api = Api(app)
 
 # --- Swagger UI Configuration ---
 SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI
-API_URL = '/static/swagger.yml'  # Our API definition
+APP_PREFIX = os.getenv('APP_PREFIX', '')
+API_URL = f'{APP_PREFIX}/static/swagger.yml' # Our API definition
 swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
     API_URL,

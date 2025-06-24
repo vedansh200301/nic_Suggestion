@@ -13,12 +13,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application's code into the container at /app
 COPY . .
 
-# Make port 5000 available to the world outside this container
-EXPOSE 5000
+# Make port 3030 available to the world outside this container
+EXPOSE 3030
 
 # Define environment variable for the OpenAI API key
 # The user will need to pass this at runtime
 ENV OPENAI_API_KEY=""
 
 # Run app.py when the container launches
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"] 
+CMD ["gunicorn", "--bind", "0.0.0.0:3030", "app:app"] 
