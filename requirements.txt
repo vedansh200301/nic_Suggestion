@@ -1,5 +1,6 @@
 Flask
 Flask-RESTful
+Flask-Cors
 openai
 python-dotenv
 flask-swagger-ui

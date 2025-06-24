@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 from flask_restful import reqparse, Api, Resource
 from dotenv import load_dotenv
 from flask_swagger_ui import get_swaggerui_blueprint
@@ -17,6 +18,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Initialize Flask app and API
 app = Flask(__name__)
+CORS(app) # This will enable CORS for all routes
 api = Api(app)
 
 # --- Swagger UI Configuration ---
