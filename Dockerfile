@@ -16,9 +16,7 @@ COPY . .
 # Make port 3030 available to the world outside this container
 EXPOSE 3030
 
-# Define environment variable for the OpenAI API key
-# The user will need to pass this at runtime
-ENV OPENAI_API_KEY=""
+
 
 # Run app.py when the container launches
 CMD ["gunicorn", "--bind", "0.0.0.0:3030", "app:app"] 
