@@ -53,6 +53,29 @@ def get_query_embedding(text, model="text-embedding-3-small"):
        print(f"Error getting query embedding: {e}")
        return None
 
+def is_valid_description(description: str) -> bool:
+    """
+    Uses the LLM to validate if the user's input is a valid business description.
+    """
+    if not description or len(description.split()) < 3: # Basic check for length
+        return False
+
+    try:
+        response = openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a validation assistant. Your task is to determine if the following text is a plausible business description or just random, nonsensical characters. Respond with only 'true' or 'false'."},
+                {"role": "user", "content": f"Is the following a valid business description? '{description}'"}
+            ],
+            max_tokens=5,
+            temperature=0.0,
+        )
+        validation_response = response.choices[0].message.content.lower().strip()
+        return "true" in validation_response
+    except Exception as e:
+        print(f"Error during input validation: {e}")
+        return False # Fail safe
+
 # --- New search function using embeddings ---
 def find_relevant_codes_with_embeddings(description, top_n=5):
     if nic_df is None or nic_df.empty:
@@ -93,6 +116,10 @@ class SuggestionAPI(Resource):
     def post(self):
         args = suggestion_parser.parse_args()
         context = args['business_details']
+        
+        # --- Input Validation ---
+        if not is_valid_description(context):
+            return {'message': 'Please enter a valid business description.'}, 400
         
         # API Key Check
         if not openai.api_key or "YOUR_OPENAI_API_KEY_HERE" in openai.api_key:
